@@ -17,8 +17,8 @@ export default {
     siteOrigin: {
       control: { type: 'text' },
     },
-    passTheErrorText: {
-      action: 'passTheErrorText',
+    onEdit: {
+      action: 'onEdit',
     },
   },
   args: {

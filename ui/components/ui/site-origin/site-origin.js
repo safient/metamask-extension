@@ -30,7 +30,7 @@ export default function SiteOrigin({
           rightIcon={rightIcon}
         />
       ) : (
-        <bdi dir="ltr">{siteOrigin}</bdi>
+        <span>{siteOrigin}</span>
       )}
     </div>
   );

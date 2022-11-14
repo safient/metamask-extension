@@ -13,8 +13,6 @@ import {
   BSC,
   GOERLI,
   AVALANCHE,
-  OPTIMISM,
-  ARBITRUM,
 } from '../../../shared/constants/swaps';
 import {
   fetchTradesInfo,
@@ -320,14 +318,6 @@ describe('Swaps Util', () => {
 
     it('returns "avalanche" for Avalanche chain ID', () => {
       expect(getNetworkNameByChainId(CHAIN_IDS.AVALANCHE)).toBe(AVALANCHE);
-    });
-
-    it('returns "optimism" for Optimism chain ID', () => {
-      expect(getNetworkNameByChainId(CHAIN_IDS.OPTIMISM)).toBe(OPTIMISM);
-    });
-
-    it('returns "arbitrum" for Arbitrum chain ID', () => {
-      expect(getNetworkNameByChainId(CHAIN_IDS.ARBITRUM)).toBe(ARBITRUM);
     });
   });
 

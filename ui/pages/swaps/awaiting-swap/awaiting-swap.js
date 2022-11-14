@@ -20,7 +20,6 @@ import {
   getUSDConversionRate,
   isHardwareWallet,
   getHardwareWalletType,
-  getFullTxData,
 } from '../../../selectors';
 
 import {
@@ -73,16 +72,15 @@ export default function AwaitingSwap({
   txHash,
   tokensReceived,
   submittingSwap,
-  txId,
 }) {
   const t = useContext(I18nContext);
   const trackEvent = useContext(MetaMetricsContext);
   const history = useHistory();
   const dispatch = useDispatch();
   const animationEventEmitter = useRef(new EventEmitter());
-  const { swapMetaData } =
-    useSelector((state) => getFullTxData(state, txId)) || {};
+
   const fetchParams = useSelector(getFetchParams, isEqual);
+  const { destinationTokenInfo, sourceTokenInfo } = fetchParams?.metaData || {};
   const fromTokenInputValue = useSelector(getFromTokenInputValue);
   const maxSlippage = useSelector(getMaxSlippage);
   const usedQuote = useSelector(getUsedQuote, isEqual);
@@ -105,7 +103,7 @@ export default function AwaitingSwap({
       currentCurrency,
       conversionRate: usdConversionRate,
       tradeValue: usedQuote?.trade?.value,
-      sourceSymbol: swapMetaData?.token_from,
+      sourceSymbol: sourceTokenInfo?.symbol,
       sourceAmount: usedQuote.sourceAmount,
       chainId,
     });
@@ -122,12 +120,12 @@ export default function AwaitingSwap({
     getCurrentSmartTransactionsEnabled,
   );
   const sensitiveProperties = {
-    token_from: swapMetaData?.token_from,
-    token_from_amount: swapMetaData?.token_from_amount,
-    token_to: swapMetaData?.token_to,
+    token_from: sourceTokenInfo?.symbol,
+    token_from_amount: fetchParams?.value,
+    token_to: destinationTokenInfo?.symbol,
     request_type: fetchParams?.balanceError ? 'Quote' : 'Order',
-    slippage: swapMetaData?.slippage,
-    custom_slippage: swapMetaData?.slippage === 2,
+    slippage: fetchParams?.slippage,
+    custom_slippage: fetchParams?.slippage === 2,
     gas_fees: feeinUnformattedFiat,
     is_hardware_wallet: hardwareWalletUsed,
     hardware_wallet_type: hardwareWalletType,
@@ -229,7 +227,7 @@ export default function AwaitingSwap({
         key="swapOnceTransactionHasProcess-1"
         className="awaiting-swap__amount-and-symbol"
       >
-        {swapMetaData?.token_to}
+        {destinationTokenInfo.symbol}
       </span>,
     ]);
     content = blockExplorerUrl && (
@@ -247,7 +245,7 @@ export default function AwaitingSwap({
         key="swapTokenAvailable-2"
         className="awaiting-swap__amount-and-symbol"
       >
-        {`${tokensReceived || ''} ${swapMetaData?.token_to}`}
+        {`${tokensReceived || ''} ${destinationTokenInfo.symbol}`}
       </span>,
     ]);
     content = blockExplorerUrl && (
@@ -302,7 +300,7 @@ export default function AwaitingSwap({
           } else if (errorKey) {
             await dispatch(navigateBackToBuildQuote(history));
           } else if (
-            isSwapsDefaultTokenSymbol(swapMetaData?.token_to, chainId) ||
+            isSwapsDefaultTokenSymbol(destinationTokenInfo?.symbol, chainId) ||
             swapComplete
           ) {
             history.push(DEFAULT_ROUTE);
@@ -333,5 +331,4 @@ AwaitingSwap.propTypes = {
     CONTRACT_DATA_DISABLED_ERROR,
   ]),
   submittingSwap: PropTypes.bool,
-  txId: PropTypes.number,
 };

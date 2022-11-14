@@ -58,7 +58,6 @@ export default function reduceApp(state = {}, action) {
     newTokensImported: '',
     newCustomNetworkAdded: {},
     onboardedInThisUISession: false,
-    customTokenAmount: '',
     ...state,
   };
 
@@ -402,11 +401,6 @@ export default function reduceApp(state = {}, action) {
         ...appState,
         onboardedInThisUISession: action.value,
       };
-    case actionConstants.SET_CUSTOM_TOKEN_AMOUNT:
-      return {
-        ...appState,
-        customTokenAmount: action.value,
-      };
     default:
       return appState;
   }
@@ -468,8 +462,4 @@ export function setNewCustomNetworkAdded(value) {
 
 export function setOnBoardedInThisUISession(value) {
   return { type: actionConstants.ONBOARDED_IN_THIS_UI_SESSION, value };
-}
-
-export function setCustomTokenAmount(value) {
-  return { type: actionConstants.SET_CUSTOM_TOKEN_AMOUNT, value };
 }

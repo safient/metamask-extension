@@ -515,7 +515,6 @@ export default function Swap() {
                       swapComplete={false}
                       errorKey={swapsErrorKey}
                       txHash={tradeTxData?.hash}
-                      txId={tradeTxData?.id}
                       submittedTime={tradeTxData?.submittedTime}
                     />
                   );
@@ -575,7 +574,7 @@ export default function Swap() {
               path={SMART_TRANSACTION_STATUS_ROUTE}
               exact
               render={() => {
-                return <SmartTransactionStatus txId={tradeTxData?.id} />;
+                return <SmartTransactionStatus />;
               }}
             />
             <Route
@@ -587,7 +586,6 @@ export default function Swap() {
                     swapComplete={tradeConfirmed}
                     txHash={tradeTxData?.hash}
                     tokensReceived={tokensReceived}
-                    txId={tradeTxData?.id}
                     submittingSwap={
                       routeState === 'awaiting' && !(approveTxId || tradeTxId)
                     }

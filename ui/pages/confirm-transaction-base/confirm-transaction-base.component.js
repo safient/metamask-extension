@@ -159,6 +159,7 @@ export default class ConfirmTransactionBase extends Component {
     hardwareWalletRequiresConnection: PropTypes.bool,
     isMultiLayerFeeNetwork: PropTypes.bool,
     eip1559V2Enabled: PropTypes.bool,
+    showBuyModal: PropTypes.func,
     isBuyableChain: PropTypes.bool,
     isApprovalOrRejection: PropTypes.bool,
     ///: BEGIN:ONLY_INCLUDE_IN(flask)
@@ -352,6 +353,7 @@ export default class ConfirmTransactionBase extends Component {
       supportsEIP1559,
       isMultiLayerFeeNetwork,
       nativeCurrency,
+      showBuyModal,
       isBuyableChain,
     } = this.props;
     const { t } = this.context;
@@ -612,6 +614,7 @@ export default class ConfirmTransactionBase extends Component {
           userAcknowledgedGasMissing={userAcknowledgedGasMissing}
           nativeCurrency={nativeCurrency}
           networkName={networkName}
+          showBuyModal={showBuyModal}
           type={txData.type}
           isBuyableChain={isBuyableChain}
         />

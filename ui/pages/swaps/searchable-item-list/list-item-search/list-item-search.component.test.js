@@ -74,7 +74,6 @@ describe('ListItemSearch', () => {
   });
 
   it('changes the search query', () => {
-    jest.useFakeTimers();
     const store = configureMockStore(middleware)(createSwapsMockStore());
     const props = createProps();
     const { getByTestId } = renderWithProvider(
@@ -83,7 +82,6 @@ describe('ListItemSearch', () => {
     );
     const input = getByTestId('search-list-items');
     fireEvent.change(input, { target: { value: 'USD' } });
-    jest.runAllTimers();
     expect(props.setSearchQuery).toHaveBeenCalledWith('USD');
     expect(props.onSearch).toHaveBeenCalledWith({
       searchQuery: 'USD',
@@ -92,7 +90,6 @@ describe('ListItemSearch', () => {
   });
 
   it('imports a token', async () => {
-    jest.useFakeTimers();
     const store = configureMockStore(middleware)(createSwapsMockStore());
     const props = createProps({ shouldSearchForImports: true });
     const { getByTestId } = renderWithProvider(
@@ -101,7 +98,6 @@ describe('ListItemSearch', () => {
     );
     const input = getByTestId('search-list-items');
     await fireEvent.change(input, { target: { value: token.address } });
-    await jest.runAllTimers();
     expect(props.setSearchQuery).toHaveBeenCalledWith(token.address);
     expect(props.onSearch).toHaveBeenCalledWith({
       searchQuery: token.address,

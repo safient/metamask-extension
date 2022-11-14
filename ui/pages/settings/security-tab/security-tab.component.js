@@ -1,7 +1,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ToggleButton from '../../../components/ui/toggle-button';
-import { REVEAL_SEED_ROUTE } from '../../../helpers/constants/routes';
+import {
+  REVEAL_SEED_ROUTE,
+  SAFIENT_BACKUP_ROUTE,
+} from '../../../helpers/constants/routes';
 import Button from '../../../components/ui/button';
 import {
   getNumberOfSettingsInSection,
@@ -59,7 +62,6 @@ export default class SecurityTab extends PureComponent {
         <div className="settings-page__content-item">
           <div className="settings-page__content-item-col">
             <Button
-              data-testid="reveal-seed-words"
               type="danger"
               large
               onClick={(event) => {
@@ -76,6 +78,44 @@ export default class SecurityTab extends PureComponent {
               }}
             >
               {t('revealSeedWords')}
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  renderBackupWithSafient() {
+    const { t } = this.context;
+    const { history } = this.props;
+    return (
+      <div ref={this.settingsRefs[4]} className="settings-page__content-row">
+        <div className="settings-page__content-item">
+          <span>
+            {/* {t('revealSeedWords')} */}
+            Backup with Safient
+          </span>
+        </div>
+        <div className="settings-page__content-item">
+          <div className="settings-page__content-item-col">
+            <Button
+              type="secondary"
+              large
+              onClick={(event) => {
+                event.preventDefault();
+                this.context.trackEvent({
+                  // category: EVENT.CATEGORIES.SETTINGS,
+                  // event: EVENT_NAMES.KEY_EXPORT_SELECTED,
+                  // properties: {
+                  //   key_type: EVENT.KEY_TYPES.SRP,
+                  //   location: 'Settings',
+                  // },
+                });
+                history.push(SAFIENT_BACKUP_ROUTE);
+              }}
+            >
+              {/* {t('revealSeedWords')} */}
+              Backup with Safient
             </Button>
           </div>
         </div>
@@ -172,6 +212,7 @@ export default class SecurityTab extends PureComponent {
       <div className="settings-page__body">
         {warning ? <div className="settings-tab__error">{warning}</div> : null}
         {this.renderSeedWords()}
+        {this.renderBackupWithSafient()}
         {this.renderIncomingTransactionsOptIn()}
         {this.renderPhishingDetectionToggle()}
         {this.renderMetaMetricsOptIn()}

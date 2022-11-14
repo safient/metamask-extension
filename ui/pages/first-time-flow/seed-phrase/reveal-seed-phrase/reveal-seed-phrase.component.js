@@ -40,6 +40,13 @@ export default class RevealSeedPhrase extends PureComponent {
 
   handleExport = () => {
     exportAsFile('', this.props.seedPhrase, 'text/plain');
+    console.log('seedphrase test', this.props.seedPhrase);
+  };
+
+  //
+  handleBackup = () => {
+    const { history } = this.props;
+    history.push({ pathname: '', data: this.state.seedPhrase });
   };
 
   handleNext = () => {
@@ -112,16 +119,12 @@ export default class RevealSeedPhrase extends PureComponent {
               'reveal-seed-phrase__secret-words--hidden': !isShowingSeedPhrase,
             },
           )}
-          data-testid={
-            isShowingSeedPhrase ? 'showing-seed-phrase' : 'hidden-seed-phrase'
-          }
         >
           {seedPhrase}
         </div>
         {!isShowingSeedPhrase && (
           <div
             className="reveal-seed-phrase__secret-blocker"
-            data-testid="reveal-seed-blocker"
             onClick={() => {
               this.context.trackEvent({
                 category: EVENT.CATEGORIES.ONBOARDING,
@@ -179,8 +182,14 @@ export default class RevealSeedPhrase extends PureComponent {
           <div className="seed-phrase__side">
             <div className="first-time-flow__text-block">{`${t('tips')}:`}</div>
             <div className="first-time-flow__text-block">
+              {/* {t('memorizePhrase')} */}
+              Use Decentralized Recovery service Providers like Safient
+            </div>
+
+            <div className="first-time-flow__text-block">
               {t('storePhrase')}
             </div>
+
             <div className="first-time-flow__text-block">
               {t('writePhrase')}
             </div>
@@ -193,6 +202,22 @@ export default class RevealSeedPhrase extends PureComponent {
                 onClick={this.handleExport}
               >
                 {t('downloadSecretBackup')}
+              </a>
+
+              <a
+                className="reveal-seed-phrase__export-text"
+                onClick={this.handleBackup}
+              >
+                Backup with Safient add the beneficiary
+              </a>
+            </div>
+
+            <div className="first-time-flow__text-block">
+              <a
+                className="reveal-seed-phrase__export-text"
+                onClick={this.handleBackup}
+              >
+                Backup with Safient add the beneficiary
               </a>
             </div>
           </div>
@@ -215,12 +240,14 @@ export default class RevealSeedPhrase extends PureComponent {
           </Button>
         </div>
         {onboardingInitiator ? (
-          <Snackbar
-            content={t('onboardingReturnNotice', [
-              t('remindMeLater'),
-              onboardingInitiator.location,
-            ])}
-          />
+          <>
+            <Snackbar
+              content={t('onboardingReturnNotice', [
+                t('remindMeLater'),
+                onboardingInitiator.location,
+              ])}
+            />
+          </>
         ) : null}
       </div>
     );

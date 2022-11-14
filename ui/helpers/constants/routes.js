@@ -50,6 +50,7 @@ const AWAITING_SWAP_ROUTE = '/swaps/awaiting-swap';
 const SWAPS_ERROR_ROUTE = '/swaps/swaps-error';
 const SWAPS_MAINTENANCE_ROUTE = '/swaps/maintenance';
 const ADD_COLLECTIBLE_ROUTE = '/add-collectible';
+const SAFIENT_BACKUP_ROUTE = '/safient-backup';
 
 const INITIALIZE_ROUTE = '/initialize';
 const INITIALIZE_WELCOME_ROUTE = '/initialize/welcome';
@@ -124,6 +125,9 @@ const PATH_NAME_MAP = {
   [CONTACT_ADD_ROUTE]: 'Add Contact Settings Page',
   [`${CONTACT_VIEW_ROUTE}/:address`]: 'View Contact Settings Page',
   [REVEAL_SEED_ROUTE]: 'Reveal Secret Recovery Phrase Page',
+  //
+  [SAFIENT_BACKUP_ROUTE]: 'Backup with Safient',
+  //
   [MOBILE_SYNC_ROUTE]: 'Sync With Mobile Page',
   [RESTORE_VAULT_ROUTE]: 'Restore Vault Page',
   [IMPORT_TOKEN_ROUTE]: 'Import Token Page',
@@ -285,4 +289,5 @@ export {
   INITIALIZE_EXPERIMENTAL_AREA,
   ONBOARDING_EXPERIMENTAL_AREA,
   ///: END:ONLY_INCLUDE_IN
+  SAFIENT_BACKUP_ROUTE,
 };

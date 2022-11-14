@@ -1,5 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { I18nContext } from '../../../contexts/i18n';
 import Box from '../../ui/box';
@@ -16,8 +15,6 @@ import {
   JUSTIFY_CONTENT,
   SIZES,
 } from '../../../helpers/constants/design-system';
-import { getCustomTokenAmount } from '../../../selectors';
-import { setCustomTokenAmount } from '../../../ducks/app/app';
 import { CustomSpendingCapTooltip } from './custom-spending-cap-tooltip';
 
 export default function CustomSpendingCap({
@@ -25,17 +22,12 @@ export default function CustomSpendingCap({
   currentTokenBalance,
   dappProposedValue,
   siteOrigin,
-  passTheErrorText,
+  onEdit,
 }) {
   const t = useContext(I18nContext);
-  const dispatch = useDispatch();
-
-  const value = useSelector(getCustomTokenAmount);
-
+  const [value, setValue] = useState('');
+  const [customSpendingCapText, setCustomSpendingCapText] = useState('');
   const [error, setError] = useState('');
-  const [showUseDefaultButton, setShowUseDefaultButton] = useState(
-    value !== String(dappProposedValue) && true,
-  );
   const inputLogicEmptyStateText = t('inputLogicEmptyState');
 
   const getInputTextLogic = (inputNumber) => {
@@ -65,10 +57,6 @@ export default function CustomSpendingCap({
     };
   };
 
-  const [customSpendingCapText, setCustomSpendingCapText] = useState(
-    getInputTextLogic(value).description,
-  );
-
   const handleChange = (valueInput) => {
     let spendingCapError = '';
     const inputTextLogic = getInputTextLogic(valueInput);
@@ -83,18 +71,8 @@ export default function CustomSpendingCap({
       setError('');
     }
 
-    dispatch(setCustomTokenAmount(String(valueInput)));
+    setValue(valueInput);
   };
-
-  useEffect(() => {
-    if (value !== String(dappProposedValue)) {
-      setShowUseDefaultButton(true);
-    }
-  }, [value, dappProposedValue]);
-
-  useEffect(() => {
-    passTheErrorText(error);
-  }, [error, passTheErrorText]);
 
   const chooseTooltipContentText =
     value > currentTokenBalance
@@ -122,6 +100,7 @@ export default function CustomSpendingCap({
           onClick={(e) => {
             e.preventDefault();
             handleChange(currentTokenBalance);
+            setValue(currentTokenBalance);
           }}
         >
           {t('max')}
@@ -152,7 +131,6 @@ export default function CustomSpendingCap({
             }
           >
             <FormField
-              numeric
               dataTestId="custom-spending-cap-input"
               autoFocus
               wrappingLabelProps={{ as: 'div' }}
@@ -173,19 +151,21 @@ export default function CustomSpendingCap({
               error={error}
               value={value}
               titleDetail={
-                showUseDefaultButton && (
-                  <button
-                    className="custom-spending-cap__input--button"
-                    type="link"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setShowUseDefaultButton(false);
+                <button
+                  className="custom-spending-cap__input--button"
+                  type="link"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (value <= currentTokenBalance || error) {
                       handleChange(dappProposedValue);
-                    }}
-                  >
-                    {t('useDefault')}
-                  </button>
-                )
+                      setValue(dappProposedValue);
+                    } else {
+                      onEdit();
+                    }
+                  }}
+                >
+                  {value > currentTokenBalance ? t('edit') : t('useDefault')}
+                </button>
               }
               titleDetailWrapperProps={{ marginBottom: 2, marginRight: 0 }}
               allowDecimals
@@ -222,7 +202,7 @@ CustomSpendingCap.propTypes = {
    */
   siteOrigin: PropTypes.string,
   /**
-   * Parent component's callback function passed in order to get the error text
+   * onClick handler for the Edit link
    */
-  passTheErrorText: PropTypes.func,
+  onEdit: PropTypes.func,
 };

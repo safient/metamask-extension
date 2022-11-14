@@ -1,11 +1,11 @@
 import React from 'react';
 import sinon from 'sinon';
-import { fireEvent } from '@testing-library/react';
-import configureMockStore from 'redux-mock-store';
-import { renderWithProvider } from '../../../../../test/lib/render-helpers';
-import RevealSeedPhrase from '.';
+import { mount } from 'enzyme';
+import RevealSeedPhrase from './reveal-seed-phrase.container';
 
 describe('Reveal Secret Recovery Phrase', () => {
+  let wrapper;
+
   const TEST_SEED =
     'debris dizzy just program just float decrease vacant alarm reduce speak stadium';
 
@@ -18,29 +18,31 @@ describe('Reveal Secret Recovery Phrase', () => {
     setCompletedOnboarding: sinon.spy(),
   };
 
-  const mockState = {
-    metamask: {},
-  };
-
-  const mockStore = configureMockStore()(mockState);
-
-  it('should match snapshot', () => {
-    const { container } = renderWithProvider(
-      <RevealSeedPhrase {...props} />,
-      mockStore,
-    );
-
-    expect(container).toMatchSnapshot();
+  beforeEach(() => {
+    wrapper = mount(<RevealSeedPhrase.WrappedComponent {...props} />, {
+      context: {
+        t: (str) => str,
+        trackEvent: () => undefined,
+      },
+    });
   });
 
-  it('clicks to reveal shows seed phrase', () => {
-    const { queryByTestId } = renderWithProvider(
-      <RevealSeedPhrase {...props} />,
-      mockStore,
+  it('secret recovery phrase', () => {
+    const seedPhrase = wrapper.find(
+      '.reveal-seed-phrase__secret-words--hidden',
     );
+    expect(seedPhrase).toHaveLength(1);
+    expect(seedPhrase.text()).toStrictEqual(TEST_SEED);
+  });
 
-    fireEvent.click(queryByTestId('reveal-seed-blocker'));
+  it('clicks to reveal', () => {
+    const reveal = wrapper.find('.reveal-seed-phrase__secret-blocker');
 
-    expect(queryByTestId('showing-seed-phrase')).toBeInTheDocument();
+    expect(wrapper.state().isShowingSeedPhrase).toStrictEqual(false);
+    reveal.simulate('click');
+    expect(wrapper.state().isShowingSeedPhrase).toStrictEqual(true);
+
+    const showSeed = wrapper.find('.reveal-seed-phrase__secret-words');
+    expect(showSeed).toHaveLength(1);
   });
 });

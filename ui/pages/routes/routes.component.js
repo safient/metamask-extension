@@ -34,6 +34,7 @@ import Alerts from '../../components/app/alerts';
 import Asset from '../asset';
 import OnboardingAppHeader from '../onboarding-flow/onboarding-app-header/onboarding-app-header';
 import TokenDetailsPage from '../token-details';
+import BackupWithSafient from '../backup-safient/backup-with-safient.component';
 ///: BEGIN:ONLY_INCLUDE_IN(flask)
 import Notifications from '../notifications';
 ///: END:ONLY_INCLUDE_IN
@@ -65,6 +66,7 @@ import {
   ///: BEGIN:ONLY_INCLUDE_IN(flask)
   NOTIFICATIONS_ROUTE,
   ///: END:ONLY_INCLUDE_IN
+  SAFIENT_BACKUP_ROUTE,
 } from '../../helpers/constants/routes';
 
 import {
@@ -178,6 +180,11 @@ export default class Routes extends Component {
         )}
         <Route path={LOCK_ROUTE} component={Lock} exact />
         <Route path={INITIALIZE_ROUTE} component={FirstTimeFlow} />
+        <Route
+          path={SAFIENT_BACKUP_ROUTE}
+          component={BackupWithSafient}
+          exact
+        />
         <Initialized path={UNLOCK_ROUTE} component={UnlockPage} exact />
         <RestoreVaultComponent
           path={RESTORE_VAULT_ROUTE}

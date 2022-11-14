@@ -71,7 +71,6 @@ import {
 import { isEqualCaseInsensitive } from '../../shared/modules/string-utils';
 import { hexToDecimal } from '../../shared/lib/metamask-controller-utils';
 import { formatMoonpaySymbol } from '../helpers/utils/moonpay';
-import { TRANSACTION_STATUSES } from '../../shared/constants/transaction';
 ///: BEGIN:ONLY_INCLUDE_IN(flask)
 import { SNAPS_VIEW_ROUTE } from '../helpers/constants/routes';
 import { getPermissionSubjects } from './permissions';
@@ -410,20 +409,6 @@ export function getAddressBookEntryOrAccountName(state, address) {
       isEqualCaseInsensitive(identity.address, toChecksumHexAddress(address)),
     );
   return entry && entry.name !== '' ? entry.name : address;
-}
-
-export function getAccountName(state, address) {
-  const entry = Object.values(state.metamask.identities).find((identity) =>
-    isEqualCaseInsensitive(identity.address, toChecksumHexAddress(address)),
-  );
-  return entry && entry.name !== '' ? entry.name : '';
-}
-
-export function getMetadataContractName(address) {
-  const entry = Object.values(STATIC_MAINNET_TOKEN_LIST).find((identity) =>
-    isEqualCaseInsensitive(identity.address, toChecksumHexAddress(address)),
-  );
-  return entry && entry.name !== '' ? entry.name : '';
 }
 
 export function accountsWithSendEtherInfoSelector(state) {
@@ -806,9 +791,6 @@ const createDeepEqualSelector = createSelectorCreator(defaultMemoize, isEqual);
 export const getUnapprovedTransactions = (state) =>
   state.metamask.unapprovedTxs;
 
-const getCurrentNetworkTransactionList = (state) =>
-  state.metamask.currentNetworkTxList;
-
 export const getTxData = (state) => state.confirmTransaction.txData;
 
 export const getUnapprovedTransaction = createDeepEqualSelector(
@@ -821,26 +803,11 @@ export const getUnapprovedTransaction = createDeepEqualSelector(
   },
 );
 
-export const getTransaction = createDeepEqualSelector(
-  getCurrentNetworkTransactionList,
-  (_, transactionId) => transactionId,
-  (unapprovedTxs, transactionId) => {
-    return (
-      Object.values(unapprovedTxs).find(({ id }) => id === transactionId) || {}
-    );
-  },
-);
-
 export const getFullTxData = createDeepEqualSelector(
   getTxData,
-  (state, transactionId, status) => {
-    if (status === TRANSACTION_STATUSES.UNAPPROVED) {
-      return getUnapprovedTransaction(state, transactionId);
-    }
-    return getTransaction(state, transactionId);
-  },
-  (_state, _transactionId, _status, customTxParamsData) => customTxParamsData,
-  (txData, transaction, _status, customTxParamsData) => {
+  (state, transactionId) => getUnapprovedTransaction(state, transactionId),
+  (_state, _transactionId, customTxParamsData) => customTxParamsData,
+  (txData, transaction, customTxParamsData) => {
     let fullTxData = { ...txData, ...transaction };
     if (transaction && transaction.simulationFails) {
       txData.simulationFails = transaction.simulationFails;
@@ -1254,16 +1221,6 @@ export function getIstokenDetectionInactiveOnNonMainnetSupportedNetwork(state) {
   return isDynamicTokenListAvailable && !useTokenDetection && !isMainnet;
 }
 
-/**
- * To get the `improvedTokenAllowanceEnabled` value which determines whether we use the improved token allowance
- *
- * @param {*} state
- * @returns Boolean
- */
-export function getIsImprovedTokenAllowanceEnabled(state) {
-  return state.metamask.improvedTokenAllowanceEnabled;
-}
-
 export function getIsCustomNetwork(state) {
   const chainId = getCurrentChainId(state);
 
@@ -1330,8 +1287,4 @@ export function getShouldShowSeedPhraseReminder(state) {
     (parseInt(accountBalance, 16) > 0 || tokens.length > 0) &&
     dismissSeedBackUpReminder === false
   );
-}
-
-export function getCustomTokenAmount(state) {
-  return state.appState.customTokenAmount;
 }

@@ -68,7 +68,7 @@ describe('ButtonSecondary', () => {
     );
   });
 
-  it('should render as danger', () => {
+  it('should render with different types', () => {
     const { getByTestId } = render(
       <>
         <ButtonSecondary danger data-testid="danger" />

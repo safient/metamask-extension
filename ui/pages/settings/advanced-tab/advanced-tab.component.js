@@ -185,7 +185,7 @@ export default class AdvancedTab extends PureComponent {
 
     return (
       <div
-        ref={this.settingsRefs[14]}
+        ref={this.settingsRefs[15]}
         className="settings-page__content-row"
         data-testid="advanced-setting-data-restore"
       >
@@ -205,7 +205,6 @@ export default class AdvancedTab extends PureComponent {
             </label>
             <input
               id="restore-file"
-              data-testid="restore-file"
               style={{ visibility: 'hidden' }}
               type="file"
               accept=".json"
@@ -248,7 +247,7 @@ export default class AdvancedTab extends PureComponent {
     const { t } = this.context;
     return (
       <div
-        ref={this.settingsRefs[13]}
+        ref={this.settingsRefs[14]}
         className="settings-page__content-row"
         data-testid="advanced-setting-data-backup"
       >
@@ -261,7 +260,6 @@ export default class AdvancedTab extends PureComponent {
         <div className="settings-page__content-item">
           <div className="settings-page__content-item-col">
             <Button
-              data-testid="backup-button"
               type="secondary"
               large
               onClick={() => this.backupUserData()}
@@ -546,7 +544,6 @@ export default class AdvancedTab extends PureComponent {
             <TextField
               type="number"
               id="autoTimeout"
-              data-testid="auto-lockout-time"
               placeholder="5"
               value={this.state.autoLockTimeLimit}
               onChange={(e) => this.handleLockChange(e.target.value)}
@@ -557,7 +554,6 @@ export default class AdvancedTab extends PureComponent {
             />
             <Button
               type="primary"
-              data-testid="auto-lockout-button"
               className="settings-tab__rpc-save-button"
               disabled={lockTimeError !== ''}
               onClick={() => {
@@ -609,7 +605,7 @@ export default class AdvancedTab extends PureComponent {
       : LEDGER_TRANSPORT_NAMES.U2F;
 
     return (
-      <div ref={this.settingsRefs[10]} className="settings-page__content-row">
+      <div ref={this.settingsRefs[11]} className="settings-page__content-row">
         <div className="settings-page__content-item">
           <span>{t('preferredLedgerConnectionType')}</span>
           <div className="settings-page__content-description">
@@ -708,7 +704,7 @@ export default class AdvancedTab extends PureComponent {
 
     return (
       <div
-        ref={this.settingsRefs[9]}
+        ref={this.settingsRefs[10]}
         className="settings-page__content-row"
         data-testid="advanced-setting-ipfs-gateway"
       >
@@ -751,7 +747,7 @@ export default class AdvancedTab extends PureComponent {
 
     return (
       <div
-        ref={this.settingsRefs[11]}
+        ref={this.settingsRefs[12]}
         className="settings-page__content-row"
         data-testid="advanced-setting-dismiss-reminder"
       >
@@ -781,7 +777,7 @@ export default class AdvancedTab extends PureComponent {
 
     return (
       <div
-        ref={this.settingsRefs[12]}
+        ref={this.settingsRefs[13]}
         className="settings-page__content-row"
         data-testid="advanced-setting-token-detection"
       >

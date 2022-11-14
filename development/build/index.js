@@ -71,7 +71,7 @@ async function defineAndRunBuildTasks() {
     version,
   } = await parseArgv();
 
-  const browserPlatforms = ['firefox', 'chrome'];
+  const browserPlatforms = ['firefox', 'chrome', 'brave', 'opera'];
 
   const browserVersionMap = getBrowserVersionMap(browserPlatforms, version);
 

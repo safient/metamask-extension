@@ -127,6 +127,32 @@ export default class SelectAction extends PureComponent {
                   {t('createAWallet')}
                 </Button>
               </div>
+
+              <div className="select-action__select-button">
+                <div className="select-action__button-content">
+                  <div className="select-action__button-symbol">
+                    <i className="fa fa-lock fa-2x"></i>
+                  </div>
+                  <div className="select-action__button-text-big">
+                    {/* {t('letsGoSetUp')} */}
+                    Recover with Safient
+                  </div>
+                  <div className="select-action__button-text-small">
+                    {/* {t('thisWillCreate')} */}
+                    This will Recover your wallet with the help of Safient
+                    Protocol
+                  </div>
+                </div>
+                <Button
+                  type="primary"
+                  className="first-time-flow__button"
+                  onClick={this.handleCreate}
+                  data-testid="create-wallet-button"
+                >
+                  {/* {t('createAWallet')} */}
+                  Recover a Wallet
+                </Button>
+              </div>
             </div>
           </div>
         </div>

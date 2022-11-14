@@ -1,0 +1,22 @@
+.test{
+    background-color: aqua;
+}
+
+.form{
+    padding:16px 16px;
+
+    .label{
+    display: block;      
+    font-weight: 700;
+    font-style: inherit;
+    font-variant: inherit;
+    font-size: 14px;
+    line-height: inherit;
+    margin: 16px 0 6px 0;
+    }
+
+    .claim-type{
+        width: 100%;
+        margin: 8px 0 16px 0;
+    }
+}

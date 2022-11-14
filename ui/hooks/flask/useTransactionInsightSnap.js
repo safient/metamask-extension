@@ -12,38 +12,26 @@ export function useTransactionInsightSnap({ transaction, chainId, snapId }) {
       'This snap does not have the transaction insight endowment.',
     );
   }
-
-  const [loading, setLoading] = useState(true);
   const [data, setData] = useState(undefined);
-  const [error, setError] = useState(undefined);
 
   useEffect(() => {
     async function fetchInsight() {
-      try {
-        setError(undefined);
-        setLoading(true);
-
-        const d = await handleSnapRequest({
-          snapId,
-          origin: '',
-          handler: 'onTransaction',
-          request: {
-            jsonrpc: '2.0',
-            method: ' ',
-            params: { transaction, chainId },
-          },
-        });
-        setData(d);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
+      const d = await handleSnapRequest({
+        snapId,
+        origin: '',
+        handler: 'onTransaction',
+        request: {
+          jsonrpc: '2.0',
+          method: ' ',
+          params: { transaction, chainId },
+        },
+      });
+      setData(d);
     }
     if (transaction) {
       fetchInsight();
     }
   }, [snapId, transaction, chainId]);
 
-  return { data, error, loading };
+  return data;
 }
